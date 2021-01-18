@@ -1,3 +1,3 @@
-import './styles/styles.css'
+import '@/styles/styles.css'
 
 console.log('Hello from world!')
