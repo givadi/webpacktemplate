@@ -2,6 +2,9 @@ const path = require('path')
 const HTMLWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+
+const isDev = process.env.NODE_ENV === 'development'
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -29,10 +32,21 @@ module.exports = {
   plugins: [
     new HTMLWebpackPlugin({
       template: './index.html',
+      minify: {
+        collapseWhitespace: !isDev,
+      },
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].[hash].css',
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, 'src/assets/img/bZcz5ZCPxrc.jpg'),
+          to: path.resolve(__dirname, 'dist'),
+        },
+      ],
     }),
   ],
   module: {
