@@ -7,6 +7,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
+const filename = (ext) => (isDev ? `[name].${ext}` : `[name].[hash].${ext}`)
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -15,7 +16,7 @@ module.exports = {
     main: './index.js',
   },
   output: {
-    filename: '[name].[hash].js',
+    filename: filename('js'),
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
@@ -41,7 +42,7 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].[hash].css',
+      filename: filename('css'),
     }),
     new CopyWebpackPlugin({
       patterns: [
