@@ -7,7 +7,21 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const TerserWebpackPlugin = require('terser-webpack-plugin')
 
 const isDev = process.env.NODE_ENV === 'development'
+
 const filename = (ext) => (isDev ? `[name].${ext}` : `[name].[hash].${ext}`)
+
+const cssLoader = (extra) => {
+  const loaders = [
+    {
+      loader: MiniCssExtractPlugin.loader,
+    },
+    'css-loader',
+  ]
+  if (extra) {
+    loaders.push(extra)
+  }
+  return loaders
+}
 
 module.exports = {
   context: path.resolve(__dirname, 'src'),
@@ -57,22 +71,11 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
-          'css-loader',
-        ],
+        use: cssLoader(),
       },
       {
         test: /\.s[ac]ss/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-          },
-          'css-loader',
-          'sass-loader',
-        ],
+        use: cssLoader('sass-loader'),
       },
       {
         test: /\.(png|jpg|svg|gif)$/,
